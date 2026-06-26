@@ -14,8 +14,8 @@ const pool = mysql.createPool({
     port: parseInt(process.env.DB_PORT, 10),
 
     // 🔴 IMPORTANT: required for Aiven cloud
-  ssl: {
-    ca: Buffer.from(process.env.DB_SSL_CERT)
+ ssl: {
+    ca: process.env.DB_SSL_CERT?.replace(/\\n/g, '\n')
 },
 
     waitForConnections: true,
