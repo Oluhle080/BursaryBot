@@ -64,9 +64,8 @@ app.listen(PORT, () => {
 const db = require('./config/db');
 (async () => {
     try {
-        const connection = await db.getConnection();
+        await db.query('SELECT 1');
         console.log('✅ Database connected successfully');
-        connection.release();
     } catch (error) {
         console.error('❌ Database connection failed:', error.message);
     }
