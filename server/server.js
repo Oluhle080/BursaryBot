@@ -62,6 +62,8 @@ app.listen(PORT, () => {
 
 // Test database connection
 const db = require('./config/db');
+console.log('GROQ_API_KEY set:', !!process.env.GROQ_API_KEY);
+console.log('GROQ_API_KEY starts with:', process.env.GROQ_API_KEY?.substring(0, 8));
 (async () => {
     try {
         await db.query('SELECT 1');
