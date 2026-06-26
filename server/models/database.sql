@@ -20,7 +20,7 @@ CREATE TABLE student_profiles (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT UNIQUE NOT NULL,
     full_name VARCHAR(100),
-    field_of_study VARCHAR(100)
+    field_of_study VARCHAR(100),
     institution VARCHAR(150),
     province VARCHAR(50),
     year_of_study INT DEFAULT 1,

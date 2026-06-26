@@ -71,3 +71,13 @@ const db = require('./config/db');
         console.error('❌ Database connection failed:', error.message);
     }
 })();
+
+// Keep database alive - ping every 5 minutes
+setInterval(async () => {
+    try {
+        await db.query('SELECT 1');
+        console.log('🔄 DB keep-alive ping sent');
+    } catch (err) {
+        console.log('⚠️ Keep-alive ping failed:', err.message);
+    }
+}, 5 * 60 * 1000);
