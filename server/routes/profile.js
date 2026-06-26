@@ -9,15 +9,13 @@ router.get('/', auth, async (req, res) => {
     console.log('📋 Fetching profile for user:', req.user.id);
     
     try {
-        // Get profile data
         const [profiles] = await db.query(
             `SELECT * FROM student_profiles WHERE user_id = ?`,
             [req.user.id]
         );
         
-        // Get user data
         const [users] = await db.query(
-            `SELECT username, email, phone, profile_pic FROM users WHERE id = ?`,
+            `SELECT username, email, phone FROM users WHERE id = ?`,
             [req.user.id]
         );
         
@@ -29,10 +27,10 @@ router.get('/', auth, async (req, res) => {
         });
         
     } catch (error) {
-        console.error('Profile GET error:', error);
+        console.error('Profile GET error:', error.message, error.code);
         res.status(500).json({ 
             success: false, 
-            message: 'Failed to load profile' 
+            message: 'Failed to load profile: ' + error.message
         });
     }
 });
@@ -40,7 +38,7 @@ router.get('/', auth, async (req, res) => {
 // POST /api/profile - Save/Update user profile
 router.post('/', auth, async (req, res) => {
     console.log('📝 Saving profile for user:', req.user.id);
-    console.log('Request body:', req.body);
+    console.log('DB available:', !!db);
     
     try {
         const {
@@ -58,14 +56,16 @@ router.post('/', auth, async (req, res) => {
             bio
         } = req.body;
 
-        // Check if profile exists
+        console.log('Profile data received:', { full_name, field_of_study, average_mark });
+
         const [existing] = await db.query(
             'SELECT id FROM student_profiles WHERE user_id = ?',
             [req.user.id]
         );
         
+        console.log('Existing profile found:', existing.length > 0);
+
         if (existing.length > 0) {
-            // Update existing profile
             await db.query(
                 `UPDATE student_profiles SET 
                     full_name = ?,
@@ -97,24 +97,13 @@ router.post('/', auth, async (req, res) => {
                     req.user.id
                 ]
             );
-            console.log('Profile updated');
+            console.log('✅ Profile updated');
         } else {
-            // Insert new profile
             await db.query(
                 `INSERT INTO student_profiles (
-                    user_id,
-                    full_name,
-                    field_of_study,
-                    institution,
-                    province,
-                    year_of_study,
-                    average_mark,
-                    parent_income,
-                    gender,
-                    race,
-                    career_interests,
-                    skills,
-                    bio
+                    user_id, full_name, field_of_study, institution, province,
+                    year_of_study, average_mark, parent_income, gender, race,
+                    career_interests, skills, bio
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     req.user.id,
@@ -132,7 +121,7 @@ router.post('/', auth, async (req, res) => {
                     bio || null
                 ]
             );
-            console.log('Profile created');
+            console.log('✅ Profile created');
         }
         
         res.json({
@@ -141,7 +130,7 @@ router.post('/', auth, async (req, res) => {
         });
         
     } catch (error) {
-        console.error('Profile POST error:', error);
+        console.error('Profile POST error FULL:', error.message, error.code, error.errno);
         res.status(500).json({ 
             success: false, 
             message: 'Failed to save profile: ' + error.message 
