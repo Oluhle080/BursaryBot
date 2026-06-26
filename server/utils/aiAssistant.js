@@ -5,67 +5,27 @@ const groq = new Groq({
 });
 
 const generateAIResponse = async (message, profile = {}) => {
-
     try {
-
         if (!process.env.GROQ_API_KEY) {
-            return `
-Groq AI is not configured.
-
-Please add your GROQ_API_KEY to the .env file.
-`;
+            return 'Groq AI is not configured. Please add your GROQ_API_KEY.';
         }
 
-        const prompt = `
-You are BursaryBot, an intelligent AI assistant for South African students.
+        const prompt = `You are BursaryBot, an AI assistant for South African students looking for bursaries. Student field: ${profile.field_of_study || 'Unknown'}. Student question: ${message}. Give a helpful, concise response.`;
 
-Your responsibilities:
-
-- Help students find bursaries
-- Explain NSFAS
-- Help write motivation letters
-- Explain application requirements
-- Give study advice
-- Give career guidance
-- Answer general student questions
-- Be conversational and friendly
-
-Student Profile:
-
-Field of Study: ${profile.field_of_study || 'Unknown'}
-Province: ${profile.province || 'Unknown'}
-Average Mark: ${profile.average_mark || 'Unknown'}
-Parent Income: ${profile.parent_income || 'Unknown'}
-
-Student Question:
-
-${message}
-`;
-
-        const completion =
-            await groq.chat.completions.create({
-                model: 'llama-3.3-70b-versatile',
-                messages: [
-                    {
-                        role: 'user',
-                        content: prompt
-                    }
-                ],
-                temperature: 0.7,
-                max_tokens: 800
-            });
+        const completion = await groq.chat.completions.create({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.7,
+            max_tokens: 800
+        });
 
         return completion.choices[0].message.content;
 
     } catch (error) {
-
-        console.error('Groq Error:', error);
-
-        return `
-I encountered an issue while generating a response.
-
-Please try again in a moment.
-`;
+        console.error('Groq Error FULL:', JSON.stringify(error, null, 2));
+        console.error('Groq Error message:', error.message);
+        console.error('Groq Error status:', error.status);
+        return 'Sorry, I am having trouble right now. Please try again.';
     }
 };
 
