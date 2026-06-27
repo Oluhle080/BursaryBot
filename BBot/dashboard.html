@@ -135,7 +135,9 @@ async function loadDashboard() {
             `).join("") || "<p>No chats yet</p>";
 
         /* BURSARIES */
-        const bursaryRes = await fetch(`${API_URL}/external-bursaries`);
+        const bursaryRes = await fetch(`${API_URL}/external-bursaries/match`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+});
         const bursaryData = await bursaryRes.json();
 
         document.getElementById("bursaryCount").textContent =
