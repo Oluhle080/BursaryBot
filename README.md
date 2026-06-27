@@ -127,14 +127,27 @@ GitHub Repository:
 
 https://github.com/Oluhle080/BursaryBot
 
+## Database (Aiven MySQL Cloud)
+
+This project uses a cloud-hosted MySQL database provided by Aiven.
+
+- Provider: Aiven Cloud
+- Database Name: defaultdb
+- Host: mysql-13c9308b-oluhleluthuli6-d6c5.h.aivencloud.com
+- Port: 12414
+
+The database is not stored in this GitHub repo because it is cloud-hosted.
+All data is stored remotely and accessed via secure connection (SSL enabled).
+
 🔗 Aiven Console:
 https://console.aiven.io/
+
 ---
 
 ## Team Members
 
  Group Members
- NN Ndimande-22330918
+NN Ndimande-22330918
 O Luthuli-22325286
 S Nombika-22312280
 QC Mtshali-22364740
