@@ -7,14 +7,11 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; height: 100vh; display: flex; flex-direction: column; }
-        
         .navbar { background: white; padding: 15px 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
         .logo h1 { font-size: 1.5rem; background: linear-gradient(135deg, #0f766e, #0d5c56); background-clip: text; -webkit-background-clip: text; color: transparent; }
         .nav-links a { margin-left: 20px; text-decoration: none; color: #555; }
         .nav-links a:hover { color: #0f766e; }
-        
         .chat-container { flex: 1; max-width: 1400px; margin: 20px auto; width: 100%; display: flex; gap: 20px; padding: 0 20px; overflow: hidden; }
-        
         .chat-main { flex: 2; display: flex; flex-direction: column; background: white; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }
         .messages-area { flex: 1; overflow-y: auto; padding: 20px; }
         .message { margin-bottom: 20px; display: flex; }
@@ -23,34 +20,31 @@
         .message-content { max-width: 70%; padding: 12px 18px; border-radius: 20px; line-height: 1.5; }
         .message.user .message-content { background: #0f766e; color: white; border-bottom-right-radius: 5px; }
         .message.bot .message-content { background: #f1f5f9; color: #1e293b; border-bottom-left-radius: 5px; }
-        .message.bot .avatar { width: 35px; height: 35px; background: linear-gradient(135deg, #0f766e, #0d5c56); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; color: white; font-weight: bold; }
-        
+        .message.bot .avatar { width: 35px; height: 35px; background: linear-gradient(135deg, #0f766e, #0d5c56); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; color: white; font-weight: bold; flex-shrink: 0; }
         .input-area { padding: 20px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
         .input-area input { flex: 1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 14px; }
         .input-area input:focus { outline: none; border-color: #0f766e; }
-        .input-area button { padding: 12px 24px; background: #0f766e; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; transition: transform 0.2s; }
-        .input-area button:hover { transform: translateY(-2px); background: #0d5c56; }
-        
-        .chat-sidebar { flex: 1; display: flex; flex-direction: column; gap: 20px; }
-        .suggestions-card, .tips-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .suggestions-card h3, .tips-card h3 { margin-bottom: 15px; color: #1e293b; }
-        .suggestion-btn { display: block; width: 100%; padding: 10px; margin-bottom: 10px; background: #f1f5f9; border: none; border-radius: 12px; text-align: left; cursor: pointer; transition: all 0.2s; }
-        .suggestion-btn:hover { background: #e2e8f0; transform: translateX(5px); }
-        .tip-item { padding: 10px 0; border-bottom: 1px solid #e2e8f0; }
-        .tip-item:last-child { border-bottom: none; }
-        .tip-title { font-weight: bold; margin-bottom: 5px; }
-        .tip-content { font-size: 13px; color: #64748b; }
-        
+        .input-area button { padding: 12px 24px; background: #0f766e; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; }
+        .input-area button:hover { background: #0d5c56; }
+        .chat-sidebar { flex: 1; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        .sidebar-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .sidebar-card h3 { margin-bottom: 15px; color: #1e293b; font-size: 15px; }
+        .suggestion-btn { display: block; width: 100%; padding: 10px; margin-bottom: 8px; background: #f1f5f9; border: none; border-radius: 12px; text-align: left; cursor: pointer; font-size: 13px; }
+        .suggestion-btn:hover { background: #e2e8f0; }
+        .doc-upload-area { border: 2px dashed #e2e8f0; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; margin-bottom: 12px; }
+        .doc-upload-area:hover { border-color: #0f766e; background: #f0fdf4; }
+        .doc-select { width: 100%; padding: 8px; border: 2px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
+        .upload-btn { background: #0f766e; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; width: 100%; }
+        .upload-btn:hover { background: #0d5c56; }
+        .doc-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8fafc; border-radius: 8px; margin-bottom: 6px; font-size: 12px; }
+        .doc-item span { color: #374151; }
+        .doc-delete { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 16px; }
         .typing { display: flex; gap: 5px; padding: 12px 18px; }
         .typing span { width: 8px; height: 8px; background: #94a3b8; border-radius: 50%; animation: typing 1.4s infinite; }
         .typing span:nth-child(2) { animation-delay: 0.2s; }
         .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
-        
-        @media (max-width: 768px) { 
-            .chat-container { flex-direction: column; height: auto; }
-            .chat-main { min-height: 500px; }
-        }
+        @media (max-width: 768px) { .chat-container { flex-direction: column; } .chat-main { min-height: 400px; } }
     </style>
 </head>
 <body>
@@ -75,19 +69,18 @@
                         <strong>Try asking me:</strong><br>
                         • "What bursaries can I apply for?"<br>
                         • "How do I write a motivation letter?"<br>
-                        • "What documents do I need?"<br>
-                        • "How do I improve my chances?"
+                        • "What documents do I need?"
                     </div>
                 </div>
             </div>
             <div class="input-area">
-                <input type="text" id="messageInput" placeholder="Ask me anything about bursaries..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <input type="text" id="messageInput" placeholder="Ask me anything about bursaries...">
                 <button onclick="sendMessage()" id="sendBtn">Send</button>
             </div>
         </div>
-        
+
         <div class="chat-sidebar">
-            <div class="suggestions-card">
+            <div class="sidebar-card">
                 <h3>💡 Suggested Questions</h3>
                 <button class="suggestion-btn" onclick="askSuggestion('What bursaries can I apply for?')">🎓 What bursaries can I apply for?</button>
                 <button class="suggestion-btn" onclick="askSuggestion('How do I improve my chances of getting a bursary?')">📈 How do I improve my chances?</button>
@@ -96,25 +89,25 @@
                 <button class="suggestion-btn" onclick="askSuggestion('Find IT bursaries')">💻 Find IT bursaries</button>
                 <button class="suggestion-btn" onclick="askSuggestion('Am I eligible for NSFAS?')">💰 Am I eligible for NSFAS?</button>
             </div>
-            
-            <div class="tips-card">
-                <h3>📚 Quick Tips</h3>
-                <div class="tip-item">
-                    <div class="tip-title">🎯 Apply Early</div>
-                    <div class="tip-content">Don't wait for deadlines - apply as soon as applications open</div>
+
+            <div class="sidebar-card">
+                <h3>📄 My Documents</h3>
+                <select class="doc-select" id="docType">
+                    <option value="id">ID Document</option>
+                    <option value="results">Academic Results</option>
+                    <option value="income">Proof of Income</option>
+                    <option value="motivation">Motivation Letter</option>
+                    <option value="other">Other</option>
+                </select>
+                <div class="doc-upload-area" onclick="document.getElementById('docFile').click()">
+                    <div style="font-size:1.5rem;">📁</div>
+                    <p style="font-size:13px; color:#64748b; margin-top:5px;">Click to select file</p>
+                    <p style="font-size:11px; color:#94a3b8;">PDF, JPG, PNG up to 5MB</p>
                 </div>
-                <div class="tip-item">
-                    <div class="tip-title">📄 Prepare Documents</div>
-                    <div class="tip-content">Keep your ID, results, and proof of income ready</div>
-                </div>
-                <div class="tip-item">
-                    <div class="tip-title">✍️ Customize Applications</div>
-                    <div class="tip-content">Tailor each motivation letter to the specific bursary</div>
-                </div>
-                <div class="tip-item">
-                    <div class="tip-title">📧 Follow Up</div>
-                    <div class="tip-content">Send a polite follow-up email if you don't hear back</div>
-                </div>
+                <input type="file" id="docFile" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileSelect(this)">
+                <div id="selectedFile" style="display:none; font-size:12px; color:#0f766e; margin-bottom:8px;"></div>
+                <button class="upload-btn" id="uploadBtn" style="display:none;" onclick="uploadDocument()">⬆️ Upload Document</button>
+                <div id="docList" style="margin-top:12px;"></div>
             </div>
         </div>
     </div>
@@ -122,196 +115,189 @@
     <script>
         const API_URL = 'https://bursarybot.onrender.com/api';
         const token = localStorage.getItem('token');
-        let conversationHistory = [];
-        
-        // Check if user is logged in
-        if (!token) {
-            window.location.href = 'login.html';
-        }
-        
+        let selectedFile = null;
+
+        if (!token) window.location.href = 'login.html';
+
         const messagesArea = document.getElementById('messagesArea');
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
-        
+
         async function loadChatHistory() {
-
-    try {
-
-        const response = await fetch(`${API_URL}/chat/history`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
+            try {
+                const response = await fetch(`${API_URL}/chat/history`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                if (!data.success || !data.history) return;
+                messagesArea.innerHTML = '';
+                data.history.reverse().forEach(chat => {
+                    addMessage(chat.question, 'user');
+                    addMessage(chat.answer, 'bot');
+                });
+            } catch (error) {
+                console.error('History load error:', error);
             }
-        });
-
-        const data = await response.json();
-
-        if (!data.success || !data.history) {
-            return;
         }
 
-        // Remove the welcome message
-        messagesArea.innerHTML = '';
-
-        // Oldest first
-        const history = data.history.reverse();
-
-        history.forEach(chat => {
-
-            addMessage(chat.question, 'user');
-            addMessage(chat.answer, 'bot');
-
-        });
-
-    } catch (error) {
-
-        console.error('History load error:', error);
-
-    }
-}
-        // Send message function
         async function sendMessage() {
             const message = messageInput.value.trim();
             if (!message) return;
-            
-            // Add user message to chat
             addMessage(message, 'user');
             messageInput.value = '';
-            
-            // Disable send button while processing
             sendBtn.disabled = true;
             sendBtn.textContent = 'Sending...';
-            
-            // Show typing indicator
             showTyping();
-            
             try {
-                console.log('Sending message:', message);
-                
                 const response = await fetch(`${API_URL}/chat`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ message: message })
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ message })
                 });
-                
-                console.log('Response status:', response.status);
                 const data = await response.json();
-                console.log('Response data:', data);
-                
-                // Hide typing indicator
                 hideTyping();
-                
                 if (data.success) {
-                    // Get the response from backend
-                    const reply = data.response || data.reply;
-                    addMessage(reply, 'bot');
-                    
-                    // Save to conversation history
-                    conversationHistory.push(
-                        { role: 'user', content: message },
-                        { role: 'assistant', content: reply }
-                    );
-                    
-                    // Keep only last 20 exchanges
-                    if (conversationHistory.length > 40) {
-                        conversationHistory = conversationHistory.slice(-40);
-                    }
+                    addMessage(data.response || data.reply, 'bot');
                 } else {
                     addMessage("Sorry, I'm having trouble right now. Please try again.", 'bot');
                 }
-                
             } catch (error) {
-                console.error('Chat error:', error);
                 hideTyping();
-                addMessage(`❌ Error: ${error.message}. Make sure the server is running on port 5000.`, 'bot');
+                addMessage("Connection error. Please try again.", 'bot');
             } finally {
-                // Re-enable send button
                 sendBtn.disabled = false;
                 sendBtn.textContent = 'Send';
                 messageInput.focus();
             }
         }
-        
-        // Add message to chat area
+
         function addMessage(text, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
             if (sender === 'bot') {
-                messageDiv.innerHTML = `
-                    <div class="avatar">🤖</div>
-                    <div class="message-content">${formatText(text)}</div>
-                `;
+                div.innerHTML = `<div class="avatar">🤖</div><div class="message-content">${formatText(text)}</div>`;
             } else {
-                messageDiv.innerHTML = `<div class="message-content">${escapeHtml(text)}</div>`;
+                div.innerHTML = `<div class="message-content">${escapeHtml(text)}</div>`;
             }
-            
-            messagesArea.appendChild(messageDiv);
+            messagesArea.appendChild(div);
             messagesArea.scrollTop = messagesArea.scrollHeight;
         }
-        
-        // Format text with line breaks
+
         function formatText(text) {
             if (!text) return '';
             return escapeHtml(text).replace(/\n/g, '<br>');
         }
-        
-        // Show typing indicator
+
         function showTyping() {
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = `
-                <div class="avatar">🤖</div>
-                <div class="message-content">
-                    <div class="typing"><span></span><span></span><span></span></div>
-                </div>
-            `;
-            messagesArea.appendChild(typingDiv);
+            const div = document.createElement('div');
+            div.className = 'message bot';
+            div.id = 'typingIndicator';
+            div.innerHTML = `<div class="avatar">🤖</div><div class="message-content"><div class="typing"><span></span><span></span><span></span></div></div>`;
+            messagesArea.appendChild(div);
             messagesArea.scrollTop = messagesArea.scrollHeight;
         }
-        
-        // Hide typing indicator
+
         function hideTyping() {
-            const typing = document.getElementById('typingIndicator');
-            if (typing) typing.remove();
+            const t = document.getElementById('typingIndicator');
+            if (t) t.remove();
         }
-        
-        // Ask a suggestion
+
         function askSuggestion(question) {
             messageInput.value = question;
             sendMessage();
         }
-        
-        // Escape HTML to prevent XSS
+
         function escapeHtml(text) {
             if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-        
-        // Enter key to send
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                sendMessage();
+
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                selectedFile = input.files[0];
+                document.getElementById('selectedFile').textContent = '📎 ' + selectedFile.name;
+                document.getElementById('selectedFile').style.display = 'block';
+                document.getElementById('uploadBtn').style.display = 'block';
             }
+        }
+
+        async function uploadDocument() {
+            if (!selectedFile) return;
+            const formData = new FormData();
+            formData.append('document', selectedFile);
+            formData.append('doc_type', document.getElementById('docType').value);
+            try {
+                const res = await fetch(`${API_URL}/upload/document`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ Document uploaded successfully!');
+                    document.getElementById('docFile').value = '';
+                    document.getElementById('selectedFile').style.display = 'none';
+                    document.getElementById('uploadBtn').style.display = 'none';
+                    selectedFile = null;
+                    loadDocuments();
+                } else {
+                    alert(data.message || 'Upload failed');
+                }
+            } catch (error) {
+                alert('Upload failed: ' + error.message);
+            }
+        }
+
+        async function loadDocuments() {
+            try {
+                const res = await fetch(`${API_URL}/upload/documents`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const list = document.getElementById('docList');
+                if (data.success && data.documents && data.documents.length > 0) {
+                    list.innerHTML = data.documents.map(doc => `
+                        <div class="doc-item">
+                            <span>📄 ${doc.doc_type.toUpperCase()} — ${doc.original_name || doc.filename}</span>
+                            <button class="doc-delete" onclick="deleteDocument(${doc.id})">🗑️</button>
+                        </div>
+                    `).join('');
+                } else {
+                    list.innerHTML = '<p style="font-size:12px; color:#94a3b8;">No documents uploaded yet.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading documents:', error);
+            }
+        }
+
+        async function deleteDocument(id) {
+            if (!confirm('Delete this document?')) return;
+            try {
+                const res = await fetch(`${API_URL}/upload/document/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) loadDocuments();
+            } catch (error) {
+                alert('Failed to delete');
+            }
+        }
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); sendMessage(); }
         });
-        
-        // Logout
+
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.clear();
             window.location.href = 'login.html';
         });
-        
-        loadChatHistory();
 
-console.log('✅ Chat page loaded. Token exists:', !!token);
+        loadChatHistory();
+        loadDocuments();
     </script>
 </body>
 </html>
