@@ -89,7 +89,10 @@
             <h3>🎯 Your Bursary Matches</h3>
             <div id="bursaryMatches"><div class="no-data">Loading matches...</div></div>
         </div>
-
+        <div class="section-card">
+    <h3>⏰ Closing Soon</h3>
+    <div id="notifications"><div class="no-data">Loading...</div></div>
+</div>
         <div class="section-card">
             <h3>💬 Recent Conversations</h3>
             <div id="chatHistory"><div class="no-data">Loading...</div></div>
@@ -120,10 +123,11 @@
         if (!token) window.location.href = 'login.html';
         document.getElementById('userName').textContent = user.username || 'Student';
 
-        async function loadDashboard() {
-            await loadMatches();
-            await loadChats();
-        }
+       async function loadDashboard() {
+    await loadMatches();
+    await loadNotifications();
+    await loadChats();
+}
 
         async function loadMatches() {
             try {
@@ -161,7 +165,29 @@
                 document.getElementById('bursaryMatches').innerHTML = '<div class="no-data">Could not load matches.</div>';
             }
         }
-
+async function loadNotifications() {
+    try {
+        const res = await fetch(`${API_URL}/external-bursaries/notifications`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success && data.notifications.length > 0) {
+            document.getElementById('notifications').innerHTML = data.notifications.map(n => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #e2e8f0;">
+                    <div>
+                        <div style="font-weight:500; color:#1e293b;">${escapeHtml(n.name)}</div>
+                        <div style="font-size:12px; color:#64748b;">${escapeHtml(n.provider)}</div>
+                    </div>
+                    <span style="background:#fee2e2; color:#991b1b; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">${n.days_left} days left</span>
+                </div>
+            `).join('');
+        } else {
+            document.getElementById('notifications').innerHTML = '<div class="no-data">No bursaries closing soon.</div>';
+        }
+    } catch (error) {
+        document.getElementById('notifications').innerHTML = '<div class="no-data">Could not load notifications.</div>';
+    }
+}
         async function loadChats() {
             try {
                 const res = await fetch(`${API_URL}/chat/history`, {
