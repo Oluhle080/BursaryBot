@@ -127,6 +127,8 @@ GitHub Repository:
 
 https://github.com/Oluhle080/BursaryBot
 
+🔗 Aiven Console:
+https://console.aiven.io/
 ---
 
 ## Team Members
