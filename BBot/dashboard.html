@@ -141,11 +141,10 @@ async function loadDashboard() {
         const bursaryData = await bursaryRes.json();
 
         document.getElementById("bursaryCount").textContent =
-            bursaryData.bursaries?.length || 0;
+    bursaryData.totalMatches || 0;
 
-        document.getElementById("matchCount").textContent =
-            bursaryData.bursaries?.length || 0;
-
+document.getElementById("matchCount").textContent =
+    bursaryData.totalMatches || 0;
     } catch (err) {
         console.log("Dashboard error:", err);
     }
